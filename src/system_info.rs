@@ -34,7 +34,17 @@ pub fn platform_arch() -> &'static str {
 
 #[cfg(all(
     target_pointer_width = "64",
-    not(any(target_arch = "arm", target_arch = "aarch64"))
+    target_env = "musl",
+    not(any(target_arch = "arm", target_arch = "aarch64", target_env = "gnu"))
+))]
+pub fn platform_arch() -> &'static str {
+    "x64-musl"
+}
+
+#[cfg(all(
+    target_pointer_width = "64",
+    target_env = "gnu",
+    not(any(target_arch = "arm", target_arch = "aarch64", target_env = "musl"))
 ))]
 pub fn platform_arch() -> &'static str {
     "x64"
